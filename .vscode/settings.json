@@ -1,0 +1,11 @@
+{
+  "[javascript]": {
+    "editor.defaultFormatter": "vscode.typescript-language-features"
+  },
+  "dart.lineLength": 120,
+  "ligaturesLimited.debug": true,
+  "editor.fontLigatures": true,
+
+  "ligaturesLimited.compactScopeDisplay": true,
+  "editor.defaultFormatter": "esbenp.prettier-vscode"
+}

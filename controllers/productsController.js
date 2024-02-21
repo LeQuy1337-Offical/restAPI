@@ -36,7 +36,7 @@ module.exports = {
             const result = await Product.aggregate([
                 {
                     $search: {
-                        index: "furniture",
+                        index: "ecommerceEasy",
                         text: {
                             query: req.params.key,
                             path: {

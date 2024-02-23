@@ -2,43 +2,43 @@ const Product = require("../models/Products");
 const Cart = require("../models/Cart");
 
 module.exports = {
-    addTocart: async (req, res) => {
+     addToCart : async (req, res) => {
         const { userId, cartItem, quantity } = req.body;
 
+        console.log(cartItem)
+        
+
         try {
-            const cart = await Cart.findOne({ userId });
+            let cart = await Cart.findOne({ userId });
 
             if (cart) {
+                // Tìm kiếm sản phẩm trong giỏ hàng
                 const existingProduct = cart.products.find(
-                    (product) => product.cartItem.toString() === cartItem
+                    (product) => product.cartItem.toString() === cartItem._id
                 );
 
                 if (existingProduct) {
-                    existingProduct.quantity += 1;
+                    // Nếu sản phẩm đã tồn tại trong giỏ hàng, tăng số lượng
+                    existingProduct.quantity += quantity;
                 } else {
+                    // Nếu sản phẩm chưa tồn tại trong giỏ hàng, thêm sản phẩm mới vào mảng
                     cart.products.push({ cartItem, quantity });
                 }
-
-                await cart.save();
-                res.status(200).json("Product added to cart");
             } else {
-                const newCart = new Cart({
+                // Nếu giỏ hàng không tồn tại, tạo giỏ hàng mới
+                cart = new Cart({
                     userId,
-                    products: [
-                        {
-                            cartItem,
-                            quantity: quantity,
-                        },
-                    ],
+                    products: [ { cartItem, quantity } ],
                 });
-
-                await newCart.save();
-                res.status(200).json("Product added to cart");
             }
+ 
+            await cart.save();
+            res.status(200).json("Product added to cart");
         } catch (error) {
             res.status(500).json(error);
         }
     },
+
 
     getCart: async (req, res) => {
         const userId = req.params.id;
